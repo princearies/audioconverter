@@ -8,6 +8,7 @@ import { DownloadResult } from './components/DownloadResult';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Features } from './components/Features';
+import { FAQ } from './components/FAQ';
 import { convertAudio, AudioFormat, QualitySettings } from './utils/audioConverter';
 
 type AppState = 'upload' | 'settings' | 'converting' | 'complete';
@@ -99,10 +100,10 @@ function App() {
   }, [convertedFiles]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/80 to-slate-900 text-white">
       <Header />
 
-      <main className="max-w-5xl mx-auto px-4 py-8">
+      <main className="max-w-5xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
         <AnimatePresence mode="wait">
           {state === 'upload' && (
             <motion.div
@@ -112,16 +113,30 @@ function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="text-center mb-8">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+              {/* Hero */}
+              <div className="text-center mb-6 sm:mb-8">
+                <motion.h1
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent"
+                >
                   Online Audio Converter
-                </h1>
-                <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                  Convert audio files to MP3, WAV, OGG, FLAC, M4A and more. Free, fast, and secure — all processing happens in your browser.
-                </p>
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-sm sm:text-lg text-gray-300 max-w-2xl mx-auto px-2"
+                >
+                  Convert audio files to MP3, WAV, OGG, FLAC & more.
+                  <span className="hidden sm:inline"> Free, fast, and secure — all processing happens in your browser.</span>
+                </motion.p>
               </div>
+
               <UploadArea onFilesSelected={handleFilesSelected} />
-              <Features />
+              <div id="features"><Features /></div>
+              <div id="faq"><FAQ /></div>
             </motion.div>
           )}
 
@@ -132,17 +147,18 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="space-y-6"
+              className="space-y-4 sm:space-y-6"
             >
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
-                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <span className="text-2xl">📁</span> Selected Files ({files.length})
+              {/* Selected files card */}
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-6">
+                <h2 className="text-base sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
+                  <span className="text-xl sm:text-2xl">📁</span> Selected Files ({files.length})
                 </h2>
-                <div className="space-y-2 max-h-40 overflow-y-auto">
+                <div className="space-y-1.5 sm:space-y-2 max-h-32 sm:max-h-40 overflow-y-auto">
                   {files.map((file, i) => (
-                    <div key={i} className="flex items-center justify-between bg-white/5 rounded-lg px-4 py-2">
-                      <span className="text-sm truncate flex-1">{file.name}</span>
-                      <span className="text-xs text-gray-400 ml-2">
+                    <div key={i} className="flex items-center justify-between bg-white/5 rounded-lg px-3 sm:px-4 py-2">
+                      <span className="text-xs sm:text-sm truncate flex-1">{file.name}</span>
+                      <span className="text-[10px] sm:text-xs text-gray-400 ml-2 shrink-0">
                         {(file.size / (1024 * 1024)).toFixed(2)} MB
                       </span>
                     </div>
@@ -157,22 +173,22 @@ function App() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 text-red-300"
+                  className="bg-red-500/20 border border-red-500/50 rounded-xl p-3 sm:p-4 text-red-300 text-sm"
                 >
                   ⚠️ {error}
                 </motion.div>
               )}
 
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button
                   onClick={handleReset}
-                  className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all font-medium"
+                  className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all font-medium active:scale-95"
                 >
                   ← Back
                 </button>
                 <button
                   onClick={handleConvert}
-                  className="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 transition-all font-semibold text-lg shadow-lg shadow-purple-500/25"
+                  className="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 transition-all font-semibold text-base sm:text-lg shadow-lg shadow-purple-500/25 active:scale-95"
                 >
                   🔄 Convert Now
                 </button>

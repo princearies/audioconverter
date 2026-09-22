@@ -1,0 +1,12 @@
+name = "online-audio-converter"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Serve static assets from the build output
+[assets]
+directory = "./dist"
+
+# Development settings
+[dev]
+port = 8787
